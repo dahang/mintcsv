@@ -36,11 +36,11 @@ var i = 0;
 for (i = 1; i <= number; ++i) {
     var accound_id = uuid();
     var random = Math.floor((Math.random() * 6) + 1);
-    for(var j=1; j<=random;j++) {
+    for (var j = 1; j <= random; j++) {
 
         var device_id = uuid();
         var MdsToken = Mds(accound_id, device_id);
-        var displayName = i.toString()+'|'+ j.toString();
+        var displayName = i.toString() + '|' + j.toString();
         var oneLine = accound_id + "," + device_id + "," + displayName + "," + MdsToken + "\n";
         stream.push((oneLine));
     }
@@ -48,7 +48,7 @@ for (i = 1; i <= number; ++i) {
 
 if (i >= number) {
     stream.join('\n');
-    fs.writeFile(name,stream.join(''));
+    fs.writeFile(name, stream.join(''));
     console.log("done close");
 }
 
@@ -68,58 +68,54 @@ function decMDS() {
 }
 
 
-function decMDSToken(mdstoken){
+function decMDSToken(mdstoken) {
     var base64token = decode_base64(mdstoken);
 
-    var pos =4 ;
+    var pos = 4;
     var tag = null;
-    var length=0;
-    var value =null;
-    var device_id=null;
-    var account_id=null;
+    var length = 0;
+    var value = null;
+    var device_id = null;
+    var account_id = null;
 
-    while (pos < base64token.length){
-        tag =base64token.charCodeAt(pos);
-        length= base64token.charCodeAt(pos+2);
-        if ((tag != 0x0E)&&(tag != 0x0F)){
+    while (pos < base64token.length) {
+        tag = base64token.charCodeAt(pos);
+        length = base64token.charCodeAt(pos + 2);
+        if ((tag != 0x0E) && (tag != 0x0F)) {
 
-            value = base64token.substring(pos+3, pos+3+length);
+            value = base64token.substring(pos + 3, pos + 3 + length);
 
-            console.log( '        MDS Token Element.tag: ' , tag);
-            console.log( '        MDS Token Element.length: ' , length);
+            console.log('        MDS Token Element.tag: ', tag);
+            console.log('        MDS Token Element.length: ', length);
 
             if (tag == 0x05) {
-                device_id =sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
-                value.charCodeAt(3),value.charCodeAt(2),value.charCodeAt(1),value.charCodeAt(0),
-                value.charCodeAt(5),value.charCodeAt(4),
-                value.charCodeAt(7),value.charCodeAt(6),
-                value.charCodeAt(8),value.charCodeAt(9),
-                value.charCodeAt(10),value.charCodeAt(11),value.charCodeAt(12),value.charCodeAt(13),value.charCodeAt(14),value.charCodeAt(15));
+                device_id = sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
+                    value.charCodeAt(3), value.charCodeAt(2), value.charCodeAt(1), value.charCodeAt(0),
+                    value.charCodeAt(5), value.charCodeAt(4),
+                    value.charCodeAt(7), value.charCodeAt(6),
+                    value.charCodeAt(8), value.charCodeAt(9),
+                    value.charCodeAt(10), value.charCodeAt(11), value.charCodeAt(12), value.charCodeAt(13), value.charCodeAt(14), value.charCodeAt(15));
 
 
+            } else if (tag == 0x16) {
 
-            }else if (tag == 0x16){
-
-                    account_id =sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
-                    value.charCodeAt(3),value.charCodeAt(2),value.charCodeAt(1),value.charCodeAt(0),
-                    value.charCodeAt(5),value.charCodeAt(4),
-                    value.charCodeAt(7),value.charCodeAt(6),
-                    value.charCodeAt(8),value.charCodeAt(9),
-                    value.charCodeAt(10),value.charCodeAt(11),value.charCodeAt(12),value.charCodeAt(13),value.charCodeAt(14),value.charCodeAt(15));
-
+                account_id = sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
+                    value.charCodeAt(3), value.charCodeAt(2), value.charCodeAt(1), value.charCodeAt(0),
+                    value.charCodeAt(5), value.charCodeAt(4),
+                    value.charCodeAt(7), value.charCodeAt(6),
+                    value.charCodeAt(8), value.charCodeAt(9),
+                    value.charCodeAt(10), value.charCodeAt(11), value.charCodeAt(12), value.charCodeAt(13), value.charCodeAt(14), value.charCodeAt(15));
 
 
             }
-            pos = pos +3 + length;
+            pos = pos + 3 + length;
 
-        }else{
-            pos =pos +3;
+        } else {
+            pos = pos + 3;
         }
     }
-    console.log("device_guid :" +device_id);
+    console.log("device_guid :" + device_id);
     console.log("account_guid : " + account_id);
-
-
 
 }
 
