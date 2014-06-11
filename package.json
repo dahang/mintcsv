@@ -1,0 +1,31 @@
+{
+  "name": "mintcsv",
+  "version": "0.0.1",
+  "description": "generate csv file for mint account_guid and device_guid MDS token",
+  "main": "./mintcsv.js",
+  "bin": {
+	  "mintcsv": "./bin/mincsv"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+	  "csv": "*",
+	  "node-uuid": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dahang/mintcsv.git "
+  },
+  "keywords": [
+    "csv",
+    "guid",
+    "MDS token"
+  ],
+  "author": "Dahang Xu <xudahang@gmail.com> (http://uxpsystems.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dahang/mintcsv.git /issues"
+  },
+  "homepage": "https://github.com/dahang/mintcsv.git "
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var mintcsv = require(path.join(__dirname, '..'));
+
+var arg = process.argv[2];
+var filename = process.argv[3];
+
+if ('--help' === arg) {
+  console.log('\n  USAGE: mintcsv [number items] [filename]\n\n');
+  console.log('  --help      Display this message and exit\n');
+  process.exit(0);
+}
+
+if (null == arg) {
+  console.log('\n  USAGE: mintcsv [number items] [filename]\n\n');
+  console.log('  --help      Display this message and exit\n');
+  process.exit(0);
+}
+
+console.log(mintcsv(arg,filename));
+process.exit(0);
