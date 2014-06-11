@@ -11,7 +11,8 @@
   },
   "dependencies": {
 	  "csv": "*",
-	  "node-uuid": "*"
+	  "node-uuid": "*",
+      "sprintf-js" : "*"
   },
   "repository": {
     "type": "git",

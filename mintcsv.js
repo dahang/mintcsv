@@ -1,3 +1,5 @@
+//var mintcsv =function(number,name){
+
 var number = process.argv[2];
 var name = process.argv[3];
 
@@ -7,6 +9,8 @@ var csv = require('csv');
 var fs = require('fs');
 var uuid = require('node-uuid');
 var fs = require('fs');
+var sprintf = require("sprintf-js").sprintf,
+    vsprintf = require("sprintf-js").vsprintf;
 //var Stream = require("stream");
 //var wstream = fs.createWriteStream(path.join(__dirname, name));
 //var stream = new Stream();
@@ -15,7 +19,7 @@ var stream = [];
 //stream.readable = true;
 //stream.pipe(wstream,{end:false});
 
-//decMDS();
+decMDS();
 
 var Mds = function MDSToken(account_id, device_id) {
 //    return account_id + device_id;
@@ -55,10 +59,67 @@ if (i >= number) {
 function decMDS() {
 
     var mdstoken = 'txtbAA4BkQ8A1hAAEEYJ804TGM9LuRpFxQ4/JpwCABAkePUAYDsWSaKPdelT3LNcEQADwNd0EgAEGyuQhRMAFAesx2vY9y6yanqXy/JtY6VZX6U9BAAJbXItYnJhbmNoFAAQBIm+T01KwEi3xjo4ClF0ahUAEDOD2TxF06VHiqFrezuD39IFABC1suXgCtrqSL2zwbHkRI3ZFgAQMDHGJCBXG0q1BWZUwvsS0AYAA1BDMBgAAmhrGQACBCcaABVQYWNpZmljIFN0YW5kYXJkIFRpbWUoAAKBLCAAAWQ+AAAcABBq0W31Icaqje/MJkiR5FuGHQAYHgACiN4LABC7biuvgER/AXHDSfhDaM0wIwAYHgACiN4kABBh2WIbrlnRsnXPzRnyDsodJgBZJwBDAwAEGysgEQgAOVNDSEVNRT1odHRwO0FQUElEPW1pY3Jvc29mdC5tZWRpYXJvb20uc3RvcmVmcm9udC8xLjMvbWFpbhwAEF+77XD6pv6ClgNMAIrl4B0zABDuvnHgVZcA59XyMGVml4Iv';
+    decMDSToken(mdstoken);
 //    console.log("mdstoken lenth ", mdstoken.length);
 //    var base64token = decode_base64(mdstoken);
 //    console.log(base64token, base64token.length);
     return mdstoken;
+
+}
+
+
+function decMDSToken(mdstoken){
+    var base64token = decode_base64(mdstoken);
+
+    var pos =4 ;
+    var tag = null;
+    var length=0;
+    var value =null;
+    var device_id=null;
+    var account_id=null;
+
+    while (pos < base64token.length){
+        tag =base64token.charCodeAt(pos);
+        length= base64token.charCodeAt(pos+2);
+        if ((tag != 0x0E)&&(tag != 0x0F)){
+
+            value = base64token.substring(pos+3, pos+3+length);
+
+            console.log( '        MDS Token Element.tag: ' , tag);
+            console.log( '        MDS Token Element.length: ' , length);
+
+            if (tag == 0x05) {
+                device_id =sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
+                value.charCodeAt(3),value.charCodeAt(2),value.charCodeAt(1),value.charCodeAt(0),
+                value.charCodeAt(5),value.charCodeAt(4),
+                value.charCodeAt(7),value.charCodeAt(6),
+                value.charCodeAt(8),value.charCodeAt(9),
+                value.charCodeAt(10),value.charCodeAt(11),value.charCodeAt(12),value.charCodeAt(13),value.charCodeAt(14),value.charCodeAt(15));
+
+
+
+            }else if (tag == 0x16){
+
+                    account_id =sprintf('%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x',
+                    value.charCodeAt(3),value.charCodeAt(2),value.charCodeAt(1),value.charCodeAt(0),
+                    value.charCodeAt(5),value.charCodeAt(4),
+                    value.charCodeAt(7),value.charCodeAt(6),
+                    value.charCodeAt(8),value.charCodeAt(9),
+                    value.charCodeAt(10),value.charCodeAt(11),value.charCodeAt(12),value.charCodeAt(13),value.charCodeAt(14),value.charCodeAt(15));
+
+
+
+            }
+            pos = pos +3 + length;
+
+        }else{
+            pos =pos +3;
+        }
+    }
+    console.log("device_guid :" +device_id);
+    console.log("account_guid : " + account_id);
+
+
 
 }
 
