@@ -40,7 +40,12 @@ function showDrain() {
 }
 
 var i = 0;
+var count= 0;
 for (i = 1; i <= number; ++i) {
+
+    if(count ==number){
+        break;
+    }
     var accound_id = uuid();
     var random = Math.floor((Math.random() * 6) + 1);
     for (var j = 1; j <= random; j++) {
@@ -48,16 +53,20 @@ for (i = 1; i <= number; ++i) {
         var device_id = uuid();
 //        var MdsToken = Mds(accound_id, device_id);
         var MdsToken = encMDSToken(mdstoken, accound_id, device_id);
+        ++count;
         var displayName = i.toString() + '|' + j.toString();
         var oneLine = accound_id + "," + device_id + "," + displayName + "," + MdsToken + "\n";
         stream.push((oneLine));
+        if(count ==number){
+            break;
+        }
     }
 }
 
-if (i >= number) {
+if (count == number) {
     stream.join('\n');
     fs.writeFile(name, stream.join(''));
-    console.log("done close");
+    console.log("done : " + count + " device generated. " + i +" accounts ");
 }
 
 function decMDS() {
@@ -161,7 +170,7 @@ function encMDSToken(mdstoken, accound_guid, device_guid) {
     }
 
     var token = new Buffer(base64token, 'binary').toString('base64');
-    console.log("encod token :", token);
+//    console.log("encod token :", token);
     return token;
 
 }

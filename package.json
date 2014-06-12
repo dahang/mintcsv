@@ -3,11 +3,8 @@
   "version": "0.0.1",
   "description": "generate csv file for mint account_guid and device_guid MDS token",
   "main": "./mintcsv.js",
-  "bin": {
-	  "mintcsv": "./bin/mincsv"
-  },
   "scripts": {
-    "test": "node test/test.js"
+	"test": "node test/test.js"
   },
   "dependencies": {
 	  "csv": "*",
